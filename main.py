@@ -19,37 +19,41 @@ async def on_ready():
 
 # Команда для получения статуса из словаря
 @bot.slash_command(name='статус_1', description = "Получить статус сервера Space Station 14 из первого предложенного списка")
-async def status_command_dict1(ctx, 
+async def status_command_dict1(interaction: disnake.ApplicationCommandInteraction,
     адрес: str = commands.Param( 
         description = "Выберите сервер из предложенного списка",
         choices = lst1)):
 
+    await interaction.response.defer()
     if адрес == "скибиди стейшен ис реал...":
         embed = await skibidi_station()
-        await ctx.send(embed=embed)
     else:
         embed = await server_status(адрес)
-        await ctx.send(embed=embed)
- 
+    await interaction.edit_original_response(embed=embed)
+
 
 @bot.slash_command(name='статус_2', description = "Получить статус сервера Space Station 14 из второго предложенного списка")
-async def status_command_dict2(ctx, 
+async def status_command_dict2(interaction: disnake.ApplicationCommandInteraction,
     адрес: str = commands.Param(
         description = "Выберите сервер из предложенного списка",
         choices = lst2)):
-
+    
+    await interaction.response.defer()
     embed = await server_status(адрес)
-    await ctx.send(embed=embed)
+    await interaction.edit_original_response(embed=embed)
+
 
 
 # Команда для получения статуса, но уже вручную
 @bot.slash_command(name='статус_вручную', description = "Получить статус сервера Space Station 14, введя его адрес")
-async def status_command_manually(ctx, 
+async def status_command_manually(interaction: disnake.ApplicationCommandInteraction,
     адрес: str = commands.Param(
         description = "Введите адрес сервера - тот, по которому вы подключаетесь к игре")):
     
+    await interaction.response.defer()
     embed = await server_status(адрес + '/status')
-    await ctx.send(embed=embed)
+    await interaction.edit_original_response(embed=embed)
+
 
 
 
