@@ -1,5 +1,7 @@
 import aiohttp
 import disnake
+import random
+from collection import godness
 
 ###
 # Функция получения статуса сервера
@@ -62,3 +64,11 @@ async def skibidi_station():
     embed.description = "Бррр, щкебеде, доп доп доп, ес ес \nСкибиди дабиди да дап \nSkibidi, dom-dom-dom, yes-yes \nSkibidi-dabudu, nib-nib \nWe ain't here to hurt nobody (skibidi, skibidi, skibidi) \nWanna see you work your body (skibidi, skibidi, skibidi)"
     return embed
     # этот мир больше не спасти
+
+async def e621_troll():
+    embed = disnake.Embed(title="Бог недоволен тобой", color=disnake.Color.red())
+    url = random.choice(godness)
+    print(f'[LOG] {url}')
+    embed.set_image(url=url)
+    return embed
+
