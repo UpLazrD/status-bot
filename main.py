@@ -1,13 +1,14 @@
 # < Сторонние библиотеки >
+import os
 import disnake
 from disnake.ext import commands
-import json
+from dotenv import load_dotenv
 
 # < Файлы проекта >
 from collection import servers1, servers2
 from functions import *
-from secret import secret_token
 
+load_dotenv('secret.env')
 bot = commands.Bot(command_prefix = '!', intents = disnake.Intents.all())
 
 @bot.event
@@ -71,4 +72,6 @@ async def kalyan(ctx):
     await ctx.send(embed=embed)
 
 
-bot.run(secret_token)
+
+
+bot.run(os.getenv('SECRET_TOKEN'))

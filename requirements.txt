@@ -1,3 +1,4 @@
 disnake
 aiohttp
 random2
+dotenv
