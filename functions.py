@@ -46,13 +46,11 @@ async def server_status(address):
             embed.add_field(name="Теги сервера", value=", ".join(data['tags']) if data['tags'] else "Не указаны", inline=False)
         if 'panic_bunker' in data:
             embed.add_field(name="Режим бункера", value="Действует" if data['panic_bunker'] else "Отключён", inline=True)
-        if 'baby_jail' in data:
-            embed.add_field(name="Режим тюрьмы", value="Действует" if data['baby_jail'] else "Отключён", inline=True) 
         return embed
 
     except Exception as e:
         embed = disnake.Embed(title="Ошибка", color=disnake.Color.red())
-        embed.description = "В процессе выполнения программы, бот не смог совладать с управлением. Ошибка может заключаться в невозможности отправить запрос серверу. Убедитесь, что Вы ввели правильный адрес (тот, по которому вы подключаетесь к серверу), а сам сервер - работает. В ином случае, свяжитесь с разработчиком бота, ошибка была выведена в консоль."
+        embed.description = "**АХТУНГ!** Сервер не работает, либо был введён неправильный адрес к нему. Проверьте введённые данные, в ином случае свяжитесь с разработчиком бота."
         print(f"[ERRO АХТУНГ ДОЛБОЁБ ОШИБКИ СРАТЬ ЛЕС ЁЛКА СВЕТОФОР] {e}")
         return embed
 
@@ -67,8 +65,6 @@ async def skibidi_station():
 
 async def e621_troll():
     embed = disnake.Embed(title="Бог недоволен тобой", color=disnake.Color.red())
-    url = random.choice(godness)
-    print(f'[LOG] {url}')
-    embed.set_image(url=url)
+    embed.set_image(url=random.choice(godness))
     return embed
 

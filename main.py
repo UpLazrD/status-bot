@@ -14,7 +14,7 @@ bot = commands.Bot(command_prefix = '!', intents = disnake.Intents.all())
 @bot.event
 async def on_ready():
     print(f"[INFO] Великий {bot.user} готов к работе")
-    activity = disnake.Game(name = 'анальчике своим пальчиком')
+    activity = disnake.Game(name = 'Schizo Station 14')
     await bot.change_presence(status = disnake.Status.online, activity=activity)
 
 # Статус Церберов
@@ -59,19 +59,17 @@ async def status_command_manually(interaction: disnake.ApplicationCommandInterac
 
 # Троллинг ГРЕШНИКОВ
 @bot.slash_command(name='e621', description = "[18+] Получить рандомную фурри-картинку из источника e621")
-async def furry_troll(ctx):
+async def furry_troll(inter):
     embed = await e621_troll()
-    await ctx.send(embed=embed)
+    await inter.response.send_message(embed=embed)
 
 # Бароны.
 @bot.slash_command(name="кальян", description = "Выпустить дух чарона")
-async def kalyan(ctx):
+async def kalyan(inter):
     embed = disnake.Embed(title="", color=disnake.Color.yellow())
-    embed.set_author(name=f'{ctx.author.display_name} выпускает дух чарона!', icon_url=ctx.author.avatar.url)
-    embed.description = f'{ctx.author.display_name} решил затянуться делюкс кальяном с гравировкой **"Нищим здесь не место!"**'
-    await ctx.send(embed=embed)
-
-
+    embed.set_author(name=f'{inter.author.display_name} выпускает дух чарона!', icon_url=inter.author.avatar.url)
+    embed.description = f'{inter.author.display_name} решил затянуться делюкс кальяном с гравировкой **"Нищим здесь не место!"**'
+    await inter.response.send_message(embed=embed)
 
 
 bot.run(os.getenv('SECRET_TOKEN'))
