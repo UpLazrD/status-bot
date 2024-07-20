@@ -52,6 +52,11 @@ async def status_command_dict2(interaction: disnake.ApplicationCommandInteractio
 async def status_command_manually(interaction: disnake.ApplicationCommandInteraction,
     адрес: str = commands.Param(
         description = "Введите адрес сервера - тот, по которому вы подключаетесь к игре")):
+    if адрес.startswith("ss14://"):
+        адрес = "http://" + адрес[7:]
+    elif адрес.startswith("ss14s://"):
+       адрес = "https://" + адрес[8:]
+
     await interaction.response.defer()
     embed = await server_status(адрес + '/status')
     await interaction.edit_original_response(embed=embed)
@@ -70,6 +75,54 @@ async def kalyan(inter):
     embed.set_author(name=f'{inter.author.display_name} выпускает дух чарона!', icon_url=inter.author.avatar.url)
     embed.description = f'{inter.author.display_name} решил затянуться делюкс кальяном с гравировкой **"Нищим здесь не место!"**'
     await inter.response.send_message(embed=embed)
+
+
+# Камень Ножницы Бумага!
+import random
+
+class Card:
+    def __init__(self, suit, value):
+        self.suit = suit
+        self.value = value
+
+    def __str__(self):
+        return f"{self.value} of {self.suit}"
+
+class Deck:
+    def __init__(self):
+        self.cards = [Card(suit, value) for suit in ['Червы', 'Бубны', 'Трефы', 'Пики']
+                      for value in ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Валет', 'Королева', 'Король', 'Туз']]
+
+    def shuffle(self):
+        random.shuffle(self.cards)
+
+    def draw_card(self):
+        return self.cards.pop()
+
+class Blackjack:
+    def __init__(self):
+        self.deck = Deck()
+        self.deck.shuffle()
+        self.players_hand = []
+        self.dealers_hand = []
+
+    def deal_initial_cards(self):
+        self.players_hand.append(self.deck.draw_card())
+        self.dealers_hand.append(self.deck.draw_card())
+        self.players_hand.append(self.deck.draw_card())
+        self.dealers_hand.append(self.deck.draw_card())
+
+    def show_hands(self, reveal_dealer=False):
+        dealer_hand = "Скрыта, " + str(self.dealers_hand[1]) if not reveal_dealer else ", ".join(map(str, self.dealers_hand))
+        player_hand = ", ".join(map(str, self.players_hand))
+        return f"Рука дилера: {dealer_hand}\nРука игрока: {player_hand}"
+
+@bot.slash_command(name='блекджэк', description="Играй в Blackjack прямо в Discord!")
+async def blackjack(inter: disnake.ApplicationCommandInteraction):
+    game = Blackjack()
+    game.deal_initial_cards()
+    message = game.show_hands()
+    await inter.response.send_message(message)
 
 
 bot.run(os.getenv('SECRET_TOKEN'))

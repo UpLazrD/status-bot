@@ -2,6 +2,8 @@ import aiohttp
 import disnake
 import random
 from collection import godness
+import json
+import asyncio
 
 ###
 # Функция получения статуса сервера
@@ -10,7 +12,8 @@ async def server_status(address):
     try:
         # HTTP-запрос на сервер
         print(f"[LOG] {address}")
-        async with aiohttp.ClientSession() as session:
+        timeout = aiohttp.ClientTimeout(total=15)  # Общее время ожидания ответа - 15 секунд
+        async with aiohttp.ClientSession(timeout=timeout) as session:
             async with session.get(address) as response:
                 data = await response.json()
 
@@ -47,12 +50,26 @@ async def server_status(address):
         if 'panic_bunker' in data:
             embed.add_field(name="Режим бункера", value="Действует" if data['panic_bunker'] else "Отключён", inline=True)
         return embed
-
-    except Exception as e:
-        embed = disnake.Embed(title="Ошибка", color=disnake.Color.red())
-        embed.description = "**АХТУНГ!** Сервер не работает, либо был введён неправильный адрес к нему. Проверьте введённые данные, в ином случае свяжитесь с разработчиком бота."
-        print(f"[ERRO АХТУНГ ДОЛБОЁБ ОШИБКИ СРАТЬ ЛЕС ЁЛКА СВЕТОФОР] {e}")
+    
+    except (asyncio.TimeoutError, aiohttp.ClientError, aiohttp.ClientConnectionError) as e:
+        embed = disnake.Embed(title="<:tokarni_stanok:1001097402868039791> Ошибка подключения", color=disnake.Color.red())
+        embed.description = "Сервер не работает, либо был введён неправильный адрес. Перепроверьте введённые данные и попробуйте снова."
+        print(f"[ERRO] Ошибка подключения: {e}")
         return embed
+ 
+    except json.decoder.JSONDecodeError as e:
+        embed = disnake.Embed(title="<:tokarni_stanok:1001097402868039791> Ошибка декодирования", color=disnake.Color.red())
+        embed.description = "Не удалось декодировать ответ с сервера. Надеюсь, вы указали не адрес SS13 или чего-то подобного, если нет, то свяжитесь с разработчиком бота."
+        print(f"[ERRO] Ошибка декодирования: {e}")
+        return embed
+    
+    except Exception as e:
+        embed = disnake.Embed(title="<:tokarni_stanok:1001097402868039791> Сбой в программе", color=disnake.Color.red())
+        embed.description = "Случилась непредвиденная ошибка в работе бота. Проверьте правильность введённых данных, в ином случае свяжитесь с разработчиком бота."
+        print(f"[ERRO] Иная ошибка: {e}")
+        return embed
+    
+    
 
 
 async def skibidi_station():
