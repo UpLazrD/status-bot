@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv('secret.env')
 
-bot = commands.Bot(command_prefix = '!', intents = disnake.Intents.all())
+bot = commands.Bot(command_prefix = 'al!', intents = disnake.Intents.all())
 bot.load_extension('modules.status')
 bot.load_extension('modules.funs')
+bot.load_extension('modules.about')
 
 
 @bot.event

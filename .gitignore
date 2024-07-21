@@ -1,7 +1,6 @@
-
-secret.py
 /__pycache__
-secret.env
 /modules/__pycache__
 /test
+
+secret.env
 *.env

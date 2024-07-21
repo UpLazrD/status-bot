@@ -13,7 +13,7 @@ class ServerStatus(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         
-        # <!-- ГЛАВНАЯ ФУНКЦИЯ ЭТОГО КОГА, МАТЬ ВАШУ! -->
+    # <!-- ГЛАВНАЯ ФУНКЦИЯ ЭТОГО БОТА, МАТЬ ВАШУ! -->
     async def server_status(self, address):
         try:
             # HTTP-запрос на игровой сервер
@@ -51,7 +51,7 @@ class ServerStatus(commands.Cog):
                     embed.add_field(name="Предустановленный режим", value=data['preset'], inline=True)
 
             if 'tags' in data:
-                embed.add_field(name="Теги сервера", value=", ".join(data['tags']) if data['tags'] else "Не указаны", inline=False)
+                embed.add_field(name="Теги сервера", value=", ".join(data['tags']) if data['tags'] else "Не указаны", inline=True)
             if 'panic_bunker' in data:
                 embed.add_field(name="Режим бункера", value="Действует" if data['panic_bunker'] else "Отключён", inline=True)
             return embed
