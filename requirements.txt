@@ -1,4 +1,4 @@
 disnake
 aiohttp
 random2
-dotenv
+python-dotenv
