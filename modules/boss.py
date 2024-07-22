@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 load_dotenv('../secret.env')
 
 class BotBoss(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot, conn):
         self.bot = bot
+        self.conn = conn
 
     async def cog_check(self, ctx):
         if ctx.author.id == int(os.getenv('AUTHORIZED_USER_ID')):
@@ -50,6 +51,31 @@ class BotBoss(commands.Cog):
         except Exception as e:
             print(f'[ERRO] Ошибка включения кога: {e}')
             await ctx.send(f'<:billymaster:1126199675234570240> Модуль {cog} не найден или его не удалось включить.')
+
+
+    ### TEST БАЗ ДАННЫХ
+    @commands.command(name='db_fetch')
+    async def fetch(self, ctx):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM guilds")
+        result = cursor.fetchall()
+        await ctx.send(result)
+        cursor.close()
+
+    @commands.command(name='db_query')
+    async def query(self, ctx, query):
+        if not query:
+            await ctx.send("Запрос не может быть пустым!")
+            return 
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query)
+            self.conn.commit()
+            await ctx.send("Запрос выполнен успешно!")
+        except Exception as e:
+            await ctx.send(f"Ошибка выполнения запроса `{query}`: `{e}`")
+        finally:
+            cursor.close()
 
 
 def setup(bot: commands.Bot):

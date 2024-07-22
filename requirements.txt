@@ -2,3 +2,4 @@ disnake
 aiohttp
 random2
 python-dotenv
+mysql-connector-python
